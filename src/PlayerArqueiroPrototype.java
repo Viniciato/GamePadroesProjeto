@@ -26,6 +26,8 @@ public class PlayerArqueiroPrototype extends PlayerPrototype{
 	public PlayerPrototype clonar(String name) {
 		PlayerArqueiroPrototype arqueiro = new PlayerArqueiroPrototype();
 		arqueiro.name=name;
+		arqueiro.position=this.position;
+		arqueiro.state=this.state;
 		return arqueiro;
 	}
 }

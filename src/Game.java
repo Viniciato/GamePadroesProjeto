@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 
 public class Game {
-	private GameCareTaker careTaker;
-	private static Game instance = new Game();
+	private PlayerCareTaker careTaker;
 	private PlayerPrototype player;
 	private CheckPoint currentCheckPoint;
 	private ArrayList<CheckPoint> checkPoints = new ArrayList<>();
 	private Boolean flag = true;
 	
-	private Game(){
-		careTaker = new GameCareTaker();
+	public Game(){
+		careTaker = new PlayerCareTaker();
 		CheckPoint initial = new CheckPoint(0, "Inicio de Jogo");
 		CheckPoint phase1 = new CheckPoint(7, "CheckPoint Fase 1");
 		CheckPoint questOne = new CheckPoint(23, "CheckPoint Quest Fase 1");
@@ -24,13 +23,12 @@ public class Game {
 	public void inityGame(PlayerPrototype player){
 		this.player = player;
 		System.out.println("Jogo RPG Tiubia Iniciado :D");
-		System.out.println("Jogador "+player.getName()+" da classe: "+player.getType()+" iniciou o jogo!!");
+		System.out.println("Jogador "+player.getName()+" da classe: "+this.player.getType()+" iniciou o jogo!!");
 		saveGame();
-		loadSaveGame();
 		while(flag){
 			System.out.println("Ultimo CheckPoint: "+currentCheckPoint.getName());
-			System.out.println("Voce esta na posicao "+instance.getPlayer().getPosition());
-			player.act();
+			System.out.println("Voce esta na posicao "+this.player.getPosition());
+			this.player.act();
 			checkAct();
 			try {
 				Thread.sleep(1000);
@@ -40,26 +38,18 @@ public class Game {
 		}
 	}
 	
-	public static Game getInstance(){
-		return instance;
-	}
-	
 	private void saveGame(){
-		careTaker.addMemento(new GameMemento(instance));
+		careTaker.addMemento(new PlayerMemento(player));
 	}
 	
 	private void loadSaveGame(){
-		GameMemento memento = careTaker.getLastSave();
-		instance = memento.getGameSave();
-		player.setPosition(currentCheckPoint.getPosition());
+		PlayerMemento memento = careTaker.getLastSave();
+		this.player = memento.getPlayerSave();
+		this.player.setPosition(currentCheckPoint.getPosition());
 	}
 	
 	private void checkAct(){
-		if(player.getPosition()<0){
-			System.out.println("Voce morreu :(");
-			if(careTaker.getLastSave().getGameSave().getCurrentCheckPoint() == checkPoints.get(0))
-				System.out.println("Voce nao tem nenhum save game!! Seu jogo ira reiniciar do zero");
-			else
+		if(player.checkState()){
 				System.out.println("Voce ira continuar do ultimo saveGame!!");
 			loadSaveGame();
 		}
@@ -94,4 +84,7 @@ public class Game {
 		return currentCheckPoint;
 	}
 	
+	protected void setPlayer(PlayerPrototype player) {
+		this.player = player;
+	}
 }
