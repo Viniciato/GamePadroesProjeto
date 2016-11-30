@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Game {
 	private GameCareTaker careTaker;
 	private static Game instance = new Game();
-	private Player player;
+	private PlayerPrototype player;
 	private CheckPoint currentCheckPoint;
 	private ArrayList<CheckPoint> checkPoints = new ArrayList<>();
 	private Boolean flag = true;
@@ -21,10 +21,10 @@ public class Game {
 		currentCheckPoint = initial;
 	}
 	
-	public void inityGame(Player player){
+	public void inityGame(PlayerPrototype player){
 		this.player = player;
 		System.out.println("Jogo RPG Tiubia Iniciado :D");
-		System.out.println("Jogador "+player.getName()+" iniciou o jogo!!");
+		System.out.println("Jogador "+player.getName()+" da classe: "+player.getType()+" iniciou o jogo!!");
 		saveGame();
 		loadSaveGame();
 		while(flag){
@@ -86,7 +86,7 @@ public class Game {
 			}
 	}
 	
-	public Player getPlayer() {
+	public PlayerPrototype getPlayer() {
 		return player;
 	}
 	
