@@ -12,8 +12,6 @@ public class GameCareTaker {
 	}
 	
 	public GameMemento getLastSave(){
-		if(gameStates.isEmpty())
-			return null;
 		GameMemento game = gameStates.get(gameStates.size()-1);
 		return game;
 	}
